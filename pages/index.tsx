@@ -1,9 +1,72 @@
 import Head from "next/head"
-import React from "react"
+import React, { useState } from "react"
 
 import type { NextPage } from "next"
 
+// モデル
+type Todo = {
+  id: number
+  name: string
+  isDone: boolean
+}
+
+const mockTodo0: Todo = {
+  id: 0,
+  name: "髪を切りに行く",
+  isDone: false,
+}
+const mockTodo1: Todo = {
+  id: 1,
+  name: "プレゼントを選ぶ",
+  isDone: false,
+}
+const mockTodo2: Todo = {
+  id: 2,
+  name: "映画館デートする",
+  isDone: false,
+}
+const mockTodo3: Todo = {
+  id: 3,
+  name: "水族館デートする",
+  isDone: false,
+}
+
+const mockTodoList = [mockTodo0, mockTodo1, mockTodo2, mockTodo3]
+
+let nextId = 4
+
 const Home: NextPage = () => {
+  // todoListというステートを作成する
+  const [todoList, setTodoList] = useState(mockTodoList)
+  const [text, setText] = useState("")
+
+  // text を更新する関数
+  const newtext = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value)
+  }
+
+  // textをコンソールに表示
+  console.log(text)
+
+  // テキストを受け取り、todoListにTodoを追加する関数
+  const register = () => {
+    // 入力欄の内容を持ったnewTodoが作成される
+    const newTodo: Todo = {
+      id: nextId,
+      name: text,
+      isDone: false,
+    }
+
+    // newTodoをtodoListに追加する
+    setTodoList([...todoList, newTodo])
+
+    // 入力欄をクリアする
+    setText("")
+
+    // IDを１つ大きくする
+    nextId++
+  }
+
   return (
     <div>
       <Head>
@@ -13,7 +76,39 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex flex-col justify-center items-center m-0 min-h-screen">
-        ローカルホストが立ち上がりました。
+        <h1>Todoアプリ</h1>
+
+        <div>
+          <input value={text} onChange={newtext} className="border"></input>
+          <button onClick={register}>todo登録</button>
+        </div>
+
+        <table className="text-sm text-left text-gray-500 table-auto">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+            {/* mockTodoをmapを使って表示する */}
+            <tr>
+              <th className="py-4 px-6">ステータス</th>
+              <th className="py-4 px-6">名前</th>
+              <th></th>
+              <th className="py-4 px-6"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {todoList.map((todo) => {
+              return (
+                <tr
+                  key={todo.id}
+                  className="bg-white dark:bg-gray-800 border-b"
+                >
+                  <td></td>
+                  <td className="py-4 px-6"></td>
+                  <td>{todo.isDone}</td>
+                  <td>{todo.name}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
       </main>
     </div>
   )
