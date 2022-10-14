@@ -35,68 +35,9 @@ const mockTodoList = [mockTodo0, mockTodo1, mockTodo2, mockTodo3]
 
 let nextId = 4
 
-interface TodoProps {
-  todo: Todo
-  onToggle: (id: number) => void
-  onRemove: (id: number) => void
-  onEdit: (id: number, name: string) => void
-}
+// Todoコンポーネントのインターフェイス
 
-const Todo = ({ todo, onToggle, onRemove, onEdit }: TodoProps) => {
-  const [isEdit, setIsEditing] = useState(false)
-  const [text, setText] = useState(todo.name)
-
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value)
-  }
-
-  // 編集モードにする
-  const start = () => setIsEditing(true)
-  // 編集舌テキストを新たに登録し、編集モードを終了する
-  const finish = () => {
-    onEdit(todo.id, text)
-
-    setIsEditing(false)
-  }
-
-  const todoName = !isEdit ? (
-    <>
-      <td className="py-4 px-6">{todo.name}</td>
-      <td>
-        <button onClick={start}>編集</button>
-      </td>
-      <td className="py-4 px-6">
-        <button onClick={() => onRemove(todo.id)} className="bg-red-100">
-          削除
-        </button>
-      </td>
-    </>
-  ) : (
-    <>
-      <td>
-        <input value={text} onChange={handleChangeInput} className="border" />
-      </td>
-      <td>
-        <button onClick={finish} className="bg-blue-300">
-          編集完了
-        </button>
-      </td>
-    </>
-  )
-
-  return (
-    <tr>
-      <td className="py-4 px-6">
-        <input
-          onClick={() => onToggle(todo.id)}
-          type="checkbox"
-          checked={todo.isDone}
-        />
-      </td>
-      {todoName}
-    </tr>
-  )
-}
+// Todoコンポーネント
 
 const Home: NextPage = () => {
   // todoListというステートを作成する
@@ -179,13 +120,25 @@ const Home: NextPage = () => {
           </thead>
           <tbody>
             {todoList.map((todo) => (
-              <Todo
-                key={todo.id}
-                todo={todo}
-                onToggle={toggle}
-                onRemove={remove}
-                onEdit={edit}
-              />
+              <tr key={todo.id}>
+                <td className="py-4 px-6">
+                  <input
+                    onClick={() => toggle(todo.id)}
+                    type="checkbox"
+                    checked={todo.isDone}
+                  />
+                </td>
+                <td className="py-4 px-6">{todo.name}</td>
+                <td></td>
+                <td className="py-4 px-6">
+                  <button
+                    onClick={() => remove(todo.id)}
+                    className="bg-red-100"
+                  >
+                    削除
+                  </button>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
