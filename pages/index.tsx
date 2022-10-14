@@ -59,7 +59,7 @@ const Todo = ({ todo, onToggle, onRemove, onEdit }: TodoProps) => {
     setIsEditing(false)
   }
 
-  const todoName = !isEdit ? (
+  const todoRow = !isEdit ? (
     <>
       <td className="py-4 px-6">{todo.name}</td>
       <td>
@@ -93,7 +93,7 @@ const Todo = ({ todo, onToggle, onRemove, onEdit }: TodoProps) => {
           checked={todo.isDone}
         />
       </td>
-      {todoName}
+      {todoRow}
     </tr>
   )
 }
