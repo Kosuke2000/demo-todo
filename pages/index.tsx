@@ -39,10 +39,9 @@ interface TodoProps {
   todo: Todo
   onToggle: (id: number) => void
   onRemove: (id: number) => void
-  onEdit: (id: number, name: string) => void
 }
 
-const Todo = ({ todo, onToggle, onRemove, onEdit }: TodoProps) => {
+const Todo = ({ todo, onToggle, onRemove }: TodoProps) => {
   const [isEdit, setIsEditing] = useState(false)
   const [text, setText] = useState(todo.name)
 
@@ -54,8 +53,6 @@ const Todo = ({ todo, onToggle, onRemove, onEdit }: TodoProps) => {
   const start = () => setIsEditing(true)
   // 編集舌テキストを新たに登録し、編集モードを終了する
   const finish = () => {
-    onEdit(todo.id, text)
-
     setIsEditing(false)
   }
 
@@ -184,7 +181,6 @@ const Home: NextPage = () => {
                 todo={todo}
                 onToggle={toggle}
                 onRemove={remove}
-                onEdit={edit}
               />
             ))}
           </tbody>
